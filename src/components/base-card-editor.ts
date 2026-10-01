@@ -7,7 +7,7 @@ import type { BaseMealieCardConfig, DisplayOptions, RecipeViewMode, ValueChanged
 import { renderBool, renderText } from '../utils/editor-renders';
 import { getMealieRecipes } from '../utils/mealie-api.js';
 import { LocalizableMixin } from '../utils/localize-mixin';
-import { isHttpUrl } from '../utils/mealie-url.js';
+import { isHttpUrl, isLocalPath } from '../utils/mealie-url.js';
 import { DEFAULT_MEALIE_GROUP_SLUG } from '../config.card.js';
 import { version } from 'virtual:version';
 
@@ -69,7 +69,7 @@ export abstract class BaseMealieCardEditor<T extends BaseMealieCardConfig & Disp
   private get _showImageAllowed(): boolean {
     if (!this.config?.config_entry_id) return false;
     if (this._imageIsHash === undefined) return false;
-    if (this._imageIsHash) return isHttpUrl(this.config.url);
+    if (this._imageIsHash) return (isHttpUrl(this.config.url) || isLocalPath(this.config.url));
     return true;
   }
 

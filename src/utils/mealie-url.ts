@@ -10,6 +10,10 @@ export function isHttpUrl(url: string | undefined | null): boolean {
   }
 }
 
+export function isLocalPath(url: string | undefined | null): boolean {
+  return !!url && url.startsWith('/');
+}
+
 // Mealie serves recipes at /g/{groupSlug}/r/{slug}; the pre-2.x /r/{slug} route now 404s.
 export function buildRecipeWebUrl(baseUrl: string | undefined | null, slug: string | undefined | null, groupSlug?: string | null): string | null {
   if (!isHttpUrl(baseUrl) || !slug) return null;

@@ -1,4 +1,5 @@
 import type { HomeAssistant } from '../types';
+import { isLocalPath } from '../utils/mealie-url.js';
 
 interface RecipeForImage {
   slug?: string;
@@ -28,7 +29,10 @@ export function buildRecipeImageUrl(recipe: RecipeForImage, mealieUrl?: string |
   const base = mealieUrl.replace(/\/$/, '');
   const id = recipe.recipe_id || recipe.slug;
   if (!id) return null;
+  if (isLocalPath(base)) {
+    return `${base}/${encodeURIComponent(id)}/images/${VARIANT_FILE[variant]}`;
   return `${base}/api/media/recipes/${encodeURIComponent(id)}/images/${VARIANT_FILE[variant]}`;
+  }
 }
 
 export function resolveImageSrc(hass: HomeAssistant, imageUrl: string): string {
